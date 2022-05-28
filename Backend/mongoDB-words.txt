@@ -1,2 +1,5 @@
 Databases
 collections ~ tables
+document ~ records
+field ~ category of data like age, name ,email are all field.
+value ~ field's input

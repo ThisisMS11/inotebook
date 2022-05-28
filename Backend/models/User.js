@@ -20,6 +20,8 @@ const UserSchema=new Schema({
         default:Date.now
     }
 })
+const User=mongoose.model('mohit', UserSchema);
 
-module.exports=mongoose.model('mohit', UserSchema);
+// User.createIndexes(); // <-- this will help in uniquely identifying each document
+module.exports=User;
 //! above 'mohit' is the collection or table name

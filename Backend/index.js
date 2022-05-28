@@ -3,13 +3,12 @@ const connectTomongo = require('./db');
 const express = require('express');
 connectTomongo();
 const app = express();
-const port = 3000;
+const port = 5000;
 
-//! if we want to use req.body() and send request in json then we will have to use a middleware like below:
+//! if we want to use req.body() and send request in json then 
+//!we will have to use a middleware like below:
 app.use(express.json());
 
-// Available Routes
-//we could use the default way of initializing all the end points as well but as the size of our web app would increase maintainance of these end points would become a hactic job that's why we use the following alternate way:->
 
 
 app.use('/api/auth', require('./routes/auth.js'))
