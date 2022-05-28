@@ -1,0 +1,7 @@
+index.js (where routes are triggered)
+                |
+                ^
+routes go to respective js files
+                |
+                ^ 
+in routes we use the our mongodb schema to put our data into our database
