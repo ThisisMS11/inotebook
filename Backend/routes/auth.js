@@ -67,8 +67,7 @@ router.post('/createuser', [
         });
 
 
-        // ! JWT is simply an authentication way used to ensure a secure environment for data transfer between user and client.
-        // this is the data that we want to sent with our webtoken and this piece of data will also be used to get user information 
+        // ! JWT is simply an authentication way used to ensure a secure environment for data transfer between user and client.// this is the data that we want to sent with our webtoken and this piece of data will also be used to get user information 
         const data = {
             user: {
                 id: user.id

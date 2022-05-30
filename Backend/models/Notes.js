@@ -23,7 +23,7 @@ const NotesSchema=new Schema({
         default:Date.now
     }
 })
-module.exports=mongoose.model('user', NotesSchema);
+module.exports=mongoose.model('Note', NotesSchema);
 
 // user is the collection/table name to be maintained for storage of user notes
 
