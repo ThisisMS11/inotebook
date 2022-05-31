@@ -1,7 +1,7 @@
 var jwt = require('jsonwebtoken');
 const JWT_SECRET = 'mohitsainiislearningreact';
 
-// Get the user from the jwt token and id to the request object, we will send our token in push request using header auth-token.
+// Get the user from the jwt token sent along with the request , we will get our token from request using header auth-token.
 const fetchuser = (req, res, next) => {
     const token = req.header('auth-token');
     if (!token) {
@@ -10,7 +10,11 @@ const fetchuser = (req, res, next) => {
 
     try {
 
-        // verify will return the payload or the data that we sent while user creation 
+        /* 
+            verify will return the payload or the data that we sent while user creation
+            JWT_SECRET is the way we had signed the token and it is the means of verifying our token.
+        */
+
         const data = jwt.verify(token, JWT_SECRET);
         req.user = data.user;
         next();

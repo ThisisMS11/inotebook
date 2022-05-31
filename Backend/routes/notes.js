@@ -70,13 +70,13 @@ router.put('/updatenote/:id', fetchuser, async (req, res) => {
     if (!note) {
         res.status(404).send("Not found ");
     }
-
-
-
+    
     //checking whether the user trying to update the note is the same as the one who created it.
     if (note.user.toString() !== req.user.id) {
         res.status(401).send("Not Allowed");
     }
+
+    
 
     note = await Notes.findByIdAndUpdate(req.params.id, { $set: newNote }, { new: true })
     res.json({note});
