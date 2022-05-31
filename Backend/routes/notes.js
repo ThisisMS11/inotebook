@@ -21,7 +21,7 @@ router.get('/fetchallnotes', fetchuser, async (req, res) => {
 })
 
 
-// Route 1: Creating the user notes using /api/notes/createnotes routes
+// Route 2: Creating the user notes using /api/notes/createnotes routes
 
 router.post('/addnote', fetchuser, [
     // !validation of input data is here
@@ -54,7 +54,32 @@ router.post('/addnote', fetchuser, [
         console.log(error);
         res.status(500).send("Internal server error")
     }
+})
 
+// Route 3: updating the user notes using /api/notes/updatenote . Login required
+router.put('/updatenote/:id', fetchuser, async (req, res) => {
+    const { title, description, tag } = req.body;
+    const newNote = {};
+
+    if (title) { newNote.title = title }
+    if (description) { newNote.description = description }
+    if (tag) { newNote.tag = tag }
+
+    // Find the note to be updated and update it
+    let note = await Notes.findById(req.params.id);
+    if (!note) {
+        res.status(404).send("Not found ");
+    }
+
+
+
+    //checking whether the user trying to update the note is the same as the one who created it.
+    if (note.user.toString() !== req.user.id) {
+        res.status(401).send("Not Allowed");
+    }
+
+    note = await Notes.findByIdAndUpdate(req.params.id, { $set: newNote }, { new: true })
+    res.json({note});
 
 })
 
