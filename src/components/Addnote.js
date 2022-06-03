@@ -5,32 +5,39 @@ const Addnote = () => {
     const context = useContext(noteContext);
     const { addNote } = context;
 
-    const [note, setNote] = useState({ title: "", description: "", tag: "default" })
+    //if we do not place tag:"default" and leave tag blank that tag will not be taken at all.
+    const [note, setNote] = useState({ title: "", description: "", tag: "general" })
 
 
     const handleClick = (e) => {
         e.preventDefault();
 
-        addNote(note.title,note.description,note.tag);
+        // add note is our api call for adding notes in notstate
+        addNote(note.title, note.description, note.tag);
 
-        // setting the default text = "" once handleclick is clicked
+
+        // this is to avoid the retreival of same values of the previous note after it's creation
+
         Clear();
     }
 
-    const Clear=()=>{
-        const title=document.getElementById('title');
-        const description=document.getElementById('description')
-        const tag=document.getElementById('tag')
-        title.value="";
-        description.value=""
-        tag.value=""
+    const Clear = () => {
+        const title = document.getElementById('title');
+        const description = document.getElementById('description')
+        const tag = document.getElementById('tag')
+        title.value = "";
+        description.value = ""
+        tag.value = "";
+
+        //resetting the note
+        setNote({ title: "", description: "", tag: "general" })
+
     }
 
     const onChange = (e) => {
         // we want to name of the element to become equal to the value inside of the element here
-        setNote({...note, [e.target.name]: e.target.value })
+        setNote({ ...note, [e.target.name]: e.target.value })
     }
-
 
     return (
         <>
@@ -43,7 +50,7 @@ const Addnote = () => {
                     </div>
                     <div className="mb-3">
                         <label htmlFor="description" className="form-label" >Description</label>
-                        <input type="text" className="form-control" id="description" name="description" onChange={onChange} />
+                        <input type="text" className="form-control" id="description" name="description" onChange={onChange} minLength={5} required />
                     </div>
 
                     <div className="mb-3">
@@ -51,7 +58,7 @@ const Addnote = () => {
                         <input type="text" className="form-control" id="tag" name="tag" onChange={onChange} />
                     </div>
 
-                    <button type="submit" className="btn btn-primary" onClick={handleClick}>Add note</button>
+                    <button disabled={note.title.length < 5 || note.description.length < 5} type="submit" className="btn btn-primary" onClick={handleClick}>Add note</button>
                     <div className="btn btn-primary mx-4" onClick={Clear}>Clear</div>
                 </form>
             </div>

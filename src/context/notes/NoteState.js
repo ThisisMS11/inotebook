@@ -23,7 +23,7 @@ const NoteState = (props) => {
         const json = await response.json();
         setNotes(json)
     }
-    
+
     // add note
     const addNote = async (title, description, tag) => {
         // making the api call to add note to our database
@@ -51,7 +51,9 @@ const NoteState = (props) => {
         };
         notes were some hard coded notes in NoteState.js
         */
-       setNotes(notes.concat(json))
+
+        setNotes(notes.concat(json))
+
     }
 
     // Delete note
@@ -77,7 +79,7 @@ const NoteState = (props) => {
 
         // API call for fetching data
         const response = await fetch(`${host}/api/notes/updatenote/${id}`, {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI5MzljZjdhNmFkYjMxZjQwNGUyZjMwIn0sImlhdCI6MTY1Mzk3MjQ1NH0.g3WRzj_sTSyW9amARymGOqfDs2Dtzct-pqUt8MFxfzQ'
@@ -86,15 +88,22 @@ const NoteState = (props) => {
         });
         const json = await response.json();
 
+        // it will create a deep copy
+        let newNote = JSON.parse(JSON.stringify(notes))
+
+
         //finding the note and updating it.
-        for (let index = 0; index < notes.length; index++) {
-            const element = notes[index];
+        for (let index = 0; index < newNote.length; index++) {
+            let element = newNote[index];
             if (element._id == id) {
                 element.title = title;
                 element.description = description;
                 element.tag = tag;
+                break;
             }
         }
+        setNotes(newNote)
+
     }
 
     return (
