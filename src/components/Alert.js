@@ -1,23 +1,27 @@
-import React,{useState} from 'react'
+import React from 'react'
 
-const Alert = (props) => {
-    let { message } = props;
+function Alert(props) {
+    // function to capitalize the first letter of the word here.
 
-    const [msg, setMsg] = useState(message) 
 
-    /* this can change the message after 1 second
-        setTimeout(() => {
-        setMsg('hi god !')
-        }, 2000);
-    */
+    //had to commment it it was showing can't destructuring props.alerto as it was null initially problem for future solving
+    // const { msg, type } = props.alerto;
+
+    const capitalize = (word) => {
+        const lower = word.toLowerCase();
+        return lower.charAt(0).toUpperCase() + lower.slice(1);
+    }
 
     return (
-        <>
-            <div className="alert alert-primary" role="alert">
-                {msg}
+        props.alerto && <div>
+            <div class={`alert alert-${props.alerto.type} alert-dismissible fade show`} role="alert">
+                <strong>{capitalize(props.alerto.type)}</strong> : {props.alerto.msg}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-        </>
+        </div>
+
+        // start from 12:00 ****
     )
 }
 
-export default Alert    
+export default Alert;

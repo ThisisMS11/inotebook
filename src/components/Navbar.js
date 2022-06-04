@@ -1,6 +1,7 @@
-import React, { useEffect ,useContext} from 'react'
+import React, { useEffect, useContext } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import noteContext from '../context/notes/noteContext';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
 
@@ -10,6 +11,14 @@ const Navbar = () => {
     // }, [location])
 
     const context = useContext(noteContext);
+    const navigate = useNavigate();
+
+
+    const handlelogout = () => {
+        localStorage.removeItem('token');
+        navigate('/login')
+
+    }
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark text-light">
@@ -28,10 +37,14 @@ const Navbar = () => {
                             <Link className={`nav-link ${location.pathname === '/about' ? 'active' : ''}`} to="/about">About</Link>
                         </li>
                     </ul>
-                    <div className="d-flex">
+
+
+                    {/* null=false --> user is not logged in ---> login signup to show --> !false=true */}
+
+                    {!localStorage.getItem('token') ? <div className="d-flex">
                         <Link className="btn btn-primary mx-2" to='/login'>Login</Link>
                         <Link className="btn btn-primary mx-2" to='/signup'>Sign up</Link>
-                    </div>
+                    </div> : <button className="btn btn-primary mx-2" onClick={handlelogout}>LogOut</button>}
                 </div>
             </div>
         </nav>

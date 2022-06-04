@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import noteContext from '../context/notes/noteContext';
-const Addnote = () => {
+const Addnote = (props) => {
 
     const context = useContext(noteContext);
     const { addNote } = context;
@@ -19,6 +19,8 @@ const Addnote = () => {
         // this is to avoid the retreival of same values of the previous note after it's creation
 
         Clear();
+
+        props.showalert("note added",'success')
     }
 
     const Clear = () => {

@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
-const Signup = () => {
+const Signup = (props) => {
 
     const [credentials, setCredentials] = useState({ name: "", email: "", password: "", cpassword: "" })
 
-    const { name, email, password ,cpassword} = credentials;
+    const { name, email, password, cpassword } = credentials;
 
     const navigate = useNavigate();
 
@@ -15,7 +15,7 @@ const Signup = () => {
         // without this the page would reload which we don't want obviously 
         e.preventDefault();
 
-        console.log("our credentials are ",credentials)
+        console.log("our credentials are ", credentials)
 
         const response = await fetch("http://localhost:5000/api/auth/createuser", {
             method: 'POST',
@@ -33,9 +33,10 @@ const Signup = () => {
             console.log("Signup successful");
             localStorage.setItem('token', json.authtoken);
             navigate('/')
+            props.showalert("Sign up successful", 'success')
         }
         else {
-            alert("Invalid Credentials")
+            props.showalert("Sign up failed", 'danger')
         }
 
     }
@@ -61,12 +62,12 @@ const Signup = () => {
 
                 <div className="mb-3">
                     <label htmlFor="email" className="form-label"  >Email</label>
-                    <input type="email" className="form-control" id="email" name="email" placeholder="Enter your email" onChange={onChange} value={email}/>
+                    <input type="email" className="form-control" id="email" name="email" placeholder="Enter your email" onChange={onChange} value={email} />
                 </div>
 
                 <div className="mb-3">
                     <label htmlFor="password" className="form-label"  >Password</label>
-                    <input type="password" className="form-control" id="password" name="password" placeholder='Enter password' onChange={onChange} value={password} minLength={5} required/>
+                    <input type="password" className="form-control" id="password" name="password" placeholder='Enter password' onChange={onChange} value={password} minLength={5} required />
                 </div>
 
                 <div className="mb-3">

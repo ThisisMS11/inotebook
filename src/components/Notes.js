@@ -2,34 +2,45 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import noteContext from '../context/notes/noteContext'
 import Noteitem from './Noteitem';
 import Addnote from './Addnote';
+import { useNavigate } from 'react-router-dom';
 import NoteState from '../context/notes/NoteState';
 
 
-const Notes = () => {
+const Notes = (props) => {
     // Getting all the states and other functions  from our context api
     const context = useContext(noteContext);
     const { notes, getNotes, editnote } = context;
-    
+
+    const navigate = useNavigate();
+
     // This is to fetch all the users note whenever Notes is called
     useEffect(() => {
-        getNotes()
+        if (localStorage.getItem('token')) {
+            getNotes()
+        }
+        else {
+            navigate('/login')
+        }
     }, [])
-    
+
     // ! stuff regarding updating the noteitem
 
     const [note, setNote] = useState({ id: "", etitle: "", edescription: "", etag: "general" })
-    
+
 
     // current note will be obtained from noteitem component.
     const updatenote = (currentNote) => {
         ref.current.click();
         setNote({ id: currentNote._id, etitle: currentNote.title, edescription: currentNote.description, etag: currentNote.tag })
+
+
     }
 
     const handleClick = (e) => {
         refClose.current.click();
-        editnote(note.id,note.etitle,note.edescription,note.etag)
-        console.log(note)
+        editnote(note.id, note.etitle, note.edescription, note.etag)
+        props.showalert("updated successfully", 'success')
+
     }
 
     const onChange = (e) => {
@@ -46,7 +57,7 @@ const Notes = () => {
     return (
         <>
             {/* Addnote :-> Contains the code for creating new note using form filling with addnote and clear btns*/}
-            <Addnote />
+            <Addnote showalert={props.showalert} />
 
 
             {/* Modal starting */}
@@ -70,7 +81,7 @@ const Notes = () => {
 
                             <div className="mb-3">
                                 <label htmlFor="edescription" className="form-label" >Description</label>
-                                <input type="text" className="form-control" id="edescription" name="edescription" onChange={onChange} value={note.edescription} minLength={5} required/>
+                                <input type="text" className="form-control" id="edescription" name="edescription" onChange={onChange} value={note.edescription} minLength={5} required />
                             </div>
 
                             <div className="mb-3">
@@ -84,7 +95,7 @@ const Notes = () => {
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" ref={refClose}>Close</button>
 
                             {/* whenever this update will be hit we will change our note and also make the api call there */}
-                            
+
                             <button type="button" disabled={note.etitle.length < 5 || note.edescription.length < 5} className="btn btn-primary" onClick={handleClick}>Update</button>
                         </div>
                     </div>
@@ -99,11 +110,11 @@ const Notes = () => {
                 <h2 className="my-3">Your notes</h2>
                 <div className=" row ">
                     <div className="container">
-                        {notes.length===0 && 'No Notes'}
+                        {notes.length === 0 && 'No Notes'}
                     </div>
                     {notes.map(
                         (note) => {
-                            return <Noteitem key={note._id} note={note} updatenote={updatenote} />;
+                            return <Noteitem key={note._id} note={note} updatenote={updatenote} showalert={props.showalert} />;
                         }
                     )}
                 </div>

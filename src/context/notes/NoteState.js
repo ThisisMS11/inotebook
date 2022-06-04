@@ -17,7 +17,7 @@ const NoteState = (props) => {
         const response = await fetch(`${host}/api/notes/fetchallnotes`, {
             method: 'GET',
             headers: {
-                'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI5MzljZjdhNmFkYjMxZjQwNGUyZjMwIn0sImlhdCI6MTY1Mzk3MjQ1NH0.g3WRzj_sTSyW9amARymGOqfDs2Dtzct-pqUt8MFxfzQ'
+                'auth-token': localStorage.getItem('token')
             },
         });
         const json = await response.json();
@@ -31,7 +31,7 @@ const NoteState = (props) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI5MzljZjdhNmFkYjMxZjQwNGUyZjMwIn0sImlhdCI6MTY1Mzk3MjQ1NH0.g3WRzj_sTSyW9amARymGOqfDs2Dtzct-pqUt8MFxfzQ'
+                'auth-token': localStorage.getItem('token')
             },
             body: JSON.stringify({ title, description, tag })
         });
@@ -57,17 +57,21 @@ const NoteState = (props) => {
     }
 
     // Delete note
-    const deletenote = async (id) => {
+    const deletenote = async (id, showalert) => {
         const response = await fetch(`${host}/api/notes/deletenote/${id}`, {
             method: 'DELETE',
             headers: {
-                'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI5MzljZjdhNmFkYjMxZjQwNGUyZjMwIn0sImlhdCI6MTY1Mzk3MjQ1NH0.g3WRzj_sTSyW9amARymGOqfDs2Dtzct-pqUt8MFxfzQ'
+                'auth-token': localStorage.getItem('token')
             }
         });
 
         const json = await response.json();
 
-        console.log(json)
+        const note_title = json.note.title
+
+        if (json.response === "deletion successful") {
+            showalert(`${note_title} successfully deleted`, 'success')
+        }
 
         // filtering out all the notes whose id do not match with the one aimed to delete
         const newNotes = notes.filter((note) => { return note._id !== id })
@@ -82,7 +86,7 @@ const NoteState = (props) => {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI5MzljZjdhNmFkYjMxZjQwNGUyZjMwIn0sImlhdCI6MTY1Mzk3MjQ1NH0.g3WRzj_sTSyW9amARymGOqfDs2Dtzct-pqUt8MFxfzQ'
+                'auth-token': localStorage.getItem('token')
             },
             body: JSON.stringify({ title, description, tag })
         });
